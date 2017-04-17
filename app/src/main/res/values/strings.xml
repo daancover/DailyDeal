@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Daily Deal</string>
+
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="action_log_out">Log out</string>
+
+    <string name="label_no_deals">No deals to show.</string>
+</resources>

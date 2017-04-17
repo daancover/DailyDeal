@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "279445321317",
+    "firebase_url": "https://dailydeal-442fd.firebaseio.com",
+    "project_id": "dailydeal-442fd",
+    "storage_bucket": "dailydeal-442fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279445321317:android:1718076ea0e1b6ca",
+        "android_client_info": {
+          "package_name": "com.android.dailydeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279445321317-kv228q8rq4j6og648m7nj3k7avskp7h3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.dailydeal",
+            "certificate_hash": "9c375f5325dd9c013f9eae41231700ca20ebd950"
+          }
+        },
+        {
+          "client_id": "279445321317-cpuus1tq5ud3pcr6kpplgr2of9t7up56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7L3xlQi0yne3wJma64Id8m80lsWczDkM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279445321317-cpuus1tq5ud3pcr6kpplgr2of9t7up56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
