@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.basics.Product;
+import com.android.dailydeal.callbacks.CurrentPlaceListener;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +26,6 @@ public class ProductListFragment extends Fragment {
     @BindView(R.id.tv_no_deals)
     TextView tvNoDeals;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ProductListFragment() {
     }
 

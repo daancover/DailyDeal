@@ -1,7 +1,10 @@
 package com.android.dailydeal.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +28,7 @@ import com.android.dailydeal.utils.LoginUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     private GoogleApiClient mGoogleApiClient;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDealsDatabaseReference;
+    private double mLongitude;
+    private double mLatitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+
+                LocationUtils.getNearbyGroceryOrSupermarkets(mLatitude, mLongitude);
                 ActivityUtils.replaceFragmentToActivityWithBackStack(getSupportFragmentManager(), new AddDealFragment(), R.id.container_main);
             }
         });
@@ -119,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
+            //TODO confirm dialog
             LoginUtils.signOut(this);
             return true;
         } else if (id == android.R.id.home) {
@@ -136,7 +148,8 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     @Override
     public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
-
+        mLatitude = response.get(0).getPlace().getLatLng().latitude;
+        mLongitude = response.get(0).getPlace().getLatLng().longitude;
     }
 
     @Override

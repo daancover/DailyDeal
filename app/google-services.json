@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "279445321317-8p4ga57h7q2o5nvou7ks7s0f1pdh1ida.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.dailydeal",
+            "certificate_hash": "518737e69028ca5656156387983f3f8212a270f4"
+          }
+        },
+        {
           "client_id": "279445321317-kv228q8rq4j6og648m7nj3k7avskp7h3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
