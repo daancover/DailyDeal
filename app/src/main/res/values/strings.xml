@@ -6,4 +6,10 @@
     <string name="action_log_out">Log out</string>
 
     <string name="label_no_deals">No deals to show.</string>
+    <string name="label_name">Name</string>
+    <string name="label_address">Address</string>
+    <string name="label_old_price">Old price</string>
+    <string name="label_new_price">New price</string>
+
+    <string name="action_submit">Submit</string>
 </resources>

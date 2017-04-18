@@ -14,7 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.dailydeal.R;
+import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.callbacks.CurrentPlaceListener;
+import com.android.dailydeal.fragments.AddDealFragment;
+import com.android.dailydeal.fragments.AddDealFragment.OnListFragmentInteractionListener;
 import com.android.dailydeal.fragments.ProductListFragment;
 import com.android.dailydeal.utils.ActivityUtils;
 import com.android.dailydeal.utils.LocationUtils;
@@ -25,18 +28,25 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener, CurrentPlaceListener {
+public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener, CurrentPlaceListener, OnListFragmentInteractionListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private static final String TAG = LoginActivity.class.getName();
+    private static final String DATABASE_DEALS = "deals";
     private static final int PERMISSION_REQUEST_CODE = 1;
 
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDealsDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +61,10 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO go to addDeal
+                ActivityUtils.replaceFragmentToActivityWithBackStack(getSupportFragmentManager(), new AddDealFragment(), R.id.container_main);
             }
         });
 
@@ -73,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         } else {
             LocationUtils.getCurrentPlace(mGoogleApiClient, this);
         }
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDealsDatabaseReference = mFirebaseDatabase.getReference().child(DATABASE_DEALS);
     }
 
     @Override
@@ -84,6 +96,16 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
                 }
             }
         }
+    }
+
+    public void setupAddDeal() {
+        fab.setVisibility(View.INVISIBLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setupProductList() {
+        fab.setVisibility(View.VISIBLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -99,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         if (id == R.id.log_out) {
             LoginUtils.signOut(this);
             return true;
+        } else if (id == android.R.id.home) {
+            getSupportFragmentManager().popBackStack();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -111,6 +136,11 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     @Override
     public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Place item) {
 
     }
 }

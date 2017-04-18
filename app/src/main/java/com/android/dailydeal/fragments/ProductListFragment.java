@@ -31,7 +31,6 @@ public class ProductListFragment extends Fragment {
     public ProductListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ProductListFragment newInstance(int columnCount) {
         ProductListFragment fragment = new ProductListFragment();
@@ -56,7 +55,7 @@ public class ProductListFragment extends Fragment {
         rvRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Product> products = new ArrayList<>();
-        products.add(new Product("Product", "Address", 10.0, 5.0));
+        products.add(new Product("Product", "Address", 0, 0, 10.0, 5.0));
         rvRecycler.setAdapter(new ProductListAdapter(products));
         return view;
     }

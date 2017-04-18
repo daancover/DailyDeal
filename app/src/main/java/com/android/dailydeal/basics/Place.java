@@ -1,27 +1,23 @@
 package com.android.dailydeal.basics;
 
 /**
- * Created by Daniel on 10/04/2017.
+ * Created by Daniel on 17/04/2017.
  */
 
-public class Product {
+public class Place {
     private String name;
     private String address;
     private double lat;
     private double lon;
-    private double oldPrice;
-    private double newPrice;
 
-    public Product() {
+    public Place() {
     }
 
-    public Product(String name, String address, double lat, double lon, double oldPrice, double newPrice) {
+    public Place(String name, String address, double lat, double lon) {
         this.name = name;
         this.address = address;
         this.lat = lat;
         this.lon = lon;
-        this.oldPrice = oldPrice;
-        this.newPrice = newPrice;
     }
 
     public String getName() {
@@ -54,21 +50,5 @@ public class Product {
 
     public void setLon(double lon) {
         this.lon = lon;
-    }
-
-    public double getOldPrice() {
-        return oldPrice;
-    }
-
-    public void setOldPrice(double oldPrice) {
-        this.oldPrice = oldPrice;
-    }
-
-    public double getNewPrice() {
-        return newPrice;
-    }
-
-    public void setNewPrice(double newPrice) {
-        this.newPrice = newPrice;
     }
 }

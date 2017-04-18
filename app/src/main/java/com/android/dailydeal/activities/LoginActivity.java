@@ -8,14 +8,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.dailydeal.R;
-import com.android.dailydeal.callbacks.CurrentPlaceListener;
 import com.android.dailydeal.utils.LoginUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,7 +25,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements CurrentPlaceListener {
+public class LoginActivity extends AppCompatActivity {
     public static final String TAG = LoginActivity.class.getName();
 
     private FirebaseAuth mAuth;
@@ -132,12 +130,5 @@ public class LoginActivity extends AppCompatActivity implements CurrentPlaceList
                         // ...
                     }
                 });
-    }
-
-    @Override
-    public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
-        response.get(0).getPlace().getName();
-        response.get(0).getPlace().getAddress();
-        response.get(0).getPlace().getLocale();
     }
 }
