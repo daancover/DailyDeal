@@ -5,55 +5,27 @@ package com.android.dailydeal.basics;
  */
 
 public class Product {
-    private String name;
-    private String address;
-    private double lat;
-    private double lon;
+    private String product;
     private double oldPrice;
     private double newPrice;
+    private Place place;
 
     public Product() {
     }
 
-    public Product(String name, String address, double lat, double lon, double oldPrice, double newPrice) {
-        this.name = name;
-        this.address = address;
-        this.lat = lat;
-        this.lon = lon;
+    public Product(String product, double oldPrice, double newPrice, Place place) {
+        this.product = product;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
+        this.place = place;
     }
 
-    public String getName() {
-        return name;
+    public String getProduct() {
+        return product;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
+    public void setProduct(String product) {
+        this.product = product;
     }
 
     public double getOldPrice() {
@@ -70,5 +42,13 @@ public class Product {
 
     public void setNewPrice(double newPrice) {
         this.newPrice = newPrice;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

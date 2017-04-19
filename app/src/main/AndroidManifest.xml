@@ -13,21 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity">
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity">
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCgrB9MAFYPkVWD3tNWkqcQu6E8RWdKtPE"/>
+            android:value="AIzaSyCgrB9MAFYPkVWD3tNWkqcQu6E8RWdKtPE" />
 
     </application>
 

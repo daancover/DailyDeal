@@ -1,54 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_local_offer"
-        android:tint="@android:color/holo_green_dark"
-        tools:ignore="ContentDescription" />
+    android:layout_marginTop="@dimen/dimen_mdpi"
+    android:layout_marginLeft="@dimen/dimen_mdpi"
+    android:layout_marginRight="@dimen/dimen_mdpi"
+    android:layout_marginStart="@dimen/dimen_mdpi"
+    android:layout_marginEnd="@dimen/dimen_mdpi">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tv_product"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_ldpi"
-            android:textStyle="bold"
-            android:maxLines="1"
-            tools:text="Product"/>
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_local_offer"
+            android:tint="@android:color/holo_green_dark"
+            tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_lldpi"
-            android:textSize="@dimen/text_ldpi"
-            android:maxLines="1"
-            tools:text="Address"/>
-
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_mdpi"
-            android:textSize="@dimen/text_ldpi"
-            tools:text="$10.00 - $5.00"/>
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_ldpi"
+                android:textStyle="bold"
+                android:maxLines="1"
+                tools:text="Product"/>
+
+            <TextView
+                android:id="@+id/tv_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_ldpi"
+                android:maxLines="1"
+                tools:text="Place"/>
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_ldpi"
+                android:maxLines="1"
+                tools:text="Address"/>
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_mdpi"
+                android:textSize="@dimen/text_ldpi"
+                tools:text="$10.00 - $5.00"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>

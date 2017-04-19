@@ -1,10 +1,16 @@
 package com.android.dailydeal.basics;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Daniel on 17/04/2017.
  */
 
-public class Place {
+public class Place implements Parcelable {
     private String name;
     private String address;
     private double lat;
@@ -18,6 +24,18 @@ public class Place {
         this.address = address;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public Place(JSONObject result) {
+        try {
+            this.name = result.getString("name");
+            this.address = result.getString("vicinity");
+            this.lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+            this.lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public String getName() {
@@ -51,4 +69,37 @@ public class Place {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    protected Place(Parcel in) {
+        name = in.readString();
+        address = in.readString();
+        lat = in.readDouble();
+        lon = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(address);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 }

@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/dimen_mdpi">
+    android:paddingEnd="@dimen/dimen_hdpi"
+    android:paddingLeft="@dimen/dimen_hdpi"
+    android:paddingRight="@dimen/dimen_hdpi"
+    android:paddingStart="@dimen/dimen_hdpi"
+    android:paddingTop="@dimen/dimen_hdpi">
 
     <TextView
         android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Name"/>
+        android:maxLines="1"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        tools:text="Name" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_mdpi"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Address"/>
+        android:layout_marginBottom="@dimen/dimen_mhdpi"
+        android:layout_marginTop="@dimen/dimen_ldpi"
+        android:maxLines="1"
+        android:textSize="@dimen/text_ldpi"
+        tools:text="Address" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/holo_green_dark" />
 </LinearLayout>

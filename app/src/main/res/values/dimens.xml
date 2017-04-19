@@ -4,6 +4,7 @@
     <dimen name="dimen_lldpi">2dp</dimen>
     <dimen name="dimen_ldpi">4dp</dimen>
     <dimen name="dimen_mdpi">8dp</dimen>
+    <dimen name="dimen_mhdpi">12dp</dimen>
     <dimen name="dimen_hdpi">16dp</dimen>
     <dimen name="dimen_xhdpi">32dp</dimen>
     <dimen name="dimen_xxhdpi">48dp</dimen>

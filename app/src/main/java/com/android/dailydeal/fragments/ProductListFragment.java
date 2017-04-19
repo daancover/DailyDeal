@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.dailydeal.R;
+import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.basics.Product;
-import com.android.dailydeal.callbacks.CurrentPlaceListener;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class ProductListFragment extends Fragment {
     public ProductListFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static ProductListFragment newInstance(int columnCount) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
@@ -53,7 +51,10 @@ public class ProductListFragment extends Fragment {
         rvRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<Product> products = new ArrayList<>();
-        products.add(new Product("Product", "Address", 0, 0, 10.0, 5.0));
+        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
+        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
+        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
+        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
         rvRecycler.setAdapter(new ProductListAdapter(products));
         return view;
     }

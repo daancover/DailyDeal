@@ -8,16 +8,16 @@ import android.widget.TextView;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.basics.Place;
-import com.android.dailydeal.fragments.AddDealFragment.OnListFragmentInteractionListener;
+import com.android.dailydeal.callbacks.OnListFragmentInteractionListener;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.ViewHolder> {
 
-    private final List<Place> mValues;
+    private final ArrayList<Place> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public PlaceListAdapter(List<Place> items, OnListFragmentInteractionListener listener) {
+    public PlaceListAdapter(ArrayList<Place> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

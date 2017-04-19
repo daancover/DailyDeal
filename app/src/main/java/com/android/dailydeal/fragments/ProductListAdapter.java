@@ -29,8 +29,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mProduct.setText(mValues.get(position).getName());
-        holder.mAddress.setText(mValues.get(position).getAddress());
+        holder.mProduct.setText(mValues.get(position).getProduct());
+        holder.mPlaceName.setText(mValues.get(position).getPlace().getName());
+        holder.mAddress.setText(mValues.get(position).getPlace().getAddress());
         TextUtils.createPriceTextView(holder.mPrice, mValues.get(position).getOldPrice() + "", mValues.get(position).getNewPrice() + "");
     }
 
@@ -42,6 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mProduct;
+        public final TextView mPlaceName;
         public final TextView mAddress;
         public final TextView mPrice;
         public Product mItem;
@@ -50,6 +52,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             super(view);
             mView = view;
             mProduct = (TextView) view.findViewById(R.id.tv_product);
+            mPlaceName = (TextView) view.findViewById(R.id.tv_place);
             mAddress = (TextView) view.findViewById(R.id.tv_address);
             mPrice = (TextView) view.findViewById(R.id.tv_price);
         }

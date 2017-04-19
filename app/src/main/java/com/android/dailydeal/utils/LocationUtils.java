@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.android.dailydeal.callbacks.CurrentPlaceListener;
+import com.android.dailydeal.basics.Place;
+import com.android.dailydeal.callbacks.OnCurrentPlaceListener;
+import com.android.dailydeal.callbacks.OnNearbyGroceryAndSupermarketListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -20,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Daniel on 11/04/2017.
@@ -28,7 +31,7 @@ import java.io.IOException;
 public class LocationUtils {
     private static final String TAG = LocationUtils.class.getName();
 
-    public static void getCurrentPlace(GoogleApiClient googleApiClient, final CurrentPlaceListener placeResponse) {
+    public static void getCurrentPlace(GoogleApiClient googleApiClient, final OnCurrentPlaceListener placeResponse) {
         if (ActivityCompat.checkSelfPermission((Context) placeResponse, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -47,11 +50,12 @@ public class LocationUtils {
         });
     }
 
-    public static void getNearbyGroceryOrSupermarkets(final double lat, final double lon) {
+    public static void getNearbyGroceryOrSupermarkets(final OnNearbyGroceryAndSupermarketListener listener, final double lat, final double lon) {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
                 String response = "";
+
                 try {
                     response = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(lat, lon));
                 } catch (IOException e) {
@@ -69,11 +73,14 @@ public class LocationUtils {
                     JSONObject object = new JSONObject(response);
                     JSONArray jsonArray = object.getJSONArray("results");
 
+                    ArrayList<Place> places = new ArrayList<>();
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject placeResult = jsonArray.getJSONObject(i);
-                        Log.d(TAG, placeResult.getString("name"));
+                        places.add(new Place(placeResult));
                     }
 
+                    listener.onNearbyGroceryAndSupermarketListenerResponse(places);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

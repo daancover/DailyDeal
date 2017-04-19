@@ -2,14 +2,25 @@
     <string name="app_name">Daily Deal</string>
 
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_attention">Attention</string>
 
     <string name="action_log_out">Log out</string>
+    <string name="action_submit">Submit</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
 
     <string name="label_no_deals">No deals to show.</string>
     <string name="label_name">Name</string>
     <string name="label_address">Address</string>
     <string name="label_old_price">Old price</string>
     <string name="label_new_price">New price</string>
+    <string name="label_select_place">Select a place:</string>
+    <string name="label_log_off">Are you sure you want to log off?</string>
+    <string name="label_please_wait">Please, wait...</string>
+    <string name="label_retrieve_current_location">Could not retrieve your current location.</string>
+    <string name="label_must_select_place">You must select a place in the list above.</string>
+    <string name="label_field_empty">This field cannot be empty.</string>
+    <string name="label_new_price_lower">New price must be lower than old price.</string>
 
-    <string name="action_submit">Submit</string>
 </resources>

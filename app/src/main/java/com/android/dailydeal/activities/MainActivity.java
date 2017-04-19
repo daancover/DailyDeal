@@ -1,10 +1,9 @@
 package com.android.dailydeal.activities;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,27 +17,29 @@ import android.view.View;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.basics.Place;
-import com.android.dailydeal.callbacks.CurrentPlaceListener;
+import com.android.dailydeal.callbacks.OnCurrentPlaceListener;
+import com.android.dailydeal.callbacks.OnNearbyGroceryAndSupermarketListener;
 import com.android.dailydeal.fragments.AddDealFragment;
-import com.android.dailydeal.fragments.AddDealFragment.OnListFragmentInteractionListener;
 import com.android.dailydeal.fragments.ProductListFragment;
 import com.android.dailydeal.utils.ActivityUtils;
+import com.android.dailydeal.utils.DialogUtils;
 import com.android.dailydeal.utils.LocationUtils;
 import com.android.dailydeal.utils.LoginUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener, CurrentPlaceListener, OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements OnConnectionFailedListener, OnCurrentPlaceListener, OnNearbyGroceryAndSupermarketListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -51,8 +52,10 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     private GoogleApiClient mGoogleApiClient;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDealsDatabaseReference;
-    private double mLongitude;
+    private boolean mHasValidLatLng;
     private double mLatitude;
+    private double mLongitude;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +77,12 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
                     return;
                 }
 
-                LocationUtils.getNearbyGroceryOrSupermarkets(mLatitude, mLongitude);
-                ActivityUtils.replaceFragmentToActivityWithBackStack(getSupportFragmentManager(), new AddDealFragment(), R.id.container_main);
+                if (mHasValidLatLng) {
+                    showProgressDialog();
+                    LocationUtils.getNearbyGroceryOrSupermarkets(MainActivity.this, mLatitude, mLongitude);
+                } else {
+//                    TODO show location info
+                }
             }
         });
 
@@ -91,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
         } else {
+            showProgressDialog();
             LocationUtils.getCurrentPlace(mGoogleApiClient, this);
         }
 
@@ -103,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showProgressDialog();
                     LocationUtils.getCurrentPlace(mGoogleApiClient, this);
                 }
             }
@@ -130,8 +139,13 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         int id = item.getItemId();
 
         if (id == R.id.log_out) {
-            //TODO confirm dialog
-            LoginUtils.signOut(this);
+            DialogUtils.showDialog(this, getString(R.string.title_attention), getString(R.string.label_log_off), true, getString(R.string.action_yes), getString(R.string.action_no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    LoginUtils.signOut(MainActivity.this);
+                }
+            }, null);
+
             return true;
         } else if (id == android.R.id.home) {
             getSupportFragmentManager().popBackStack();
@@ -148,12 +162,42 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     @Override
     public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
-        mLatitude = response.get(0).getPlace().getLatLng().latitude;
-        mLongitude = response.get(0).getPlace().getLatLng().longitude;
+        hideProgressDialog();
+
+        try {
+            mLatitude = response.get(0).getPlace().getLatLng().latitude;
+            mLongitude = response.get(0).getPlace().getLatLng().longitude;
+            mHasValidLatLng = true;
+        } catch (Exception e) {
+            DialogUtils.showDialog(this, getString(R.string.title_attention), getString(R.string.label_retrieve_current_location), getString(R.string.action_ok));
+            mHasValidLatLng = false;
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onListFragmentInteraction(Place item) {
+    public void onNearbyGroceryAndSupermarketListenerResponse(ArrayList<Place> response) {
+        hideProgressDialog();
+        AddDealFragment fragment = AddDealFragment.newInstance(response);
+        ActivityUtils.replaceFragmentToActivityWithBackStack(getSupportFragmentManager(), fragment, R.id.container_main);
+    }
 
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+
+            mProgressDialog.setMessage(getString(R.string.label_please_wait));
+            mProgressDialog.setCancelable(false);
+        }
+
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }
