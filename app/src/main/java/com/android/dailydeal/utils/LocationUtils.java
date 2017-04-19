@@ -1,10 +1,6 @@
 package com.android.dailydeal.utils;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
+import android.location.Address;
 import android.util.Log;
 
 import com.android.dailydeal.callbacks.CurrentPlaceListener;
