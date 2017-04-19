@@ -1,6 +1,10 @@
 package com.android.dailydeal.utils;
 
-import android.location.Address;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.android.dailydeal.callbacks.CurrentPlaceListener;
@@ -11,8 +15,11 @@ import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by Daniel on 11/04/2017.
@@ -22,6 +29,10 @@ public class LocationUtils {
     private static final String TAG = LocationUtils.class.getName();
 
     public static void getCurrentPlace(GoogleApiClient googleApiClient, final CurrentPlaceListener placeResponse) {
+        if (ActivityCompat.checkSelfPermission((Context) placeResponse, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(googleApiClient, null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
@@ -36,8 +47,38 @@ public class LocationUtils {
         });
     }
 
-    public static void getNearbyGroceryOrSupermarkets() {
-        //https://maps.googleapis.com/maps/api/place/nearbysearch/json?radius=1000&type=restaurant&key=AIzaSyCgrB9MAFYPkVWD3tNWkqcQu6E8RWdKtPE
+    public static void getNearbyGroceryOrSupermarkets(final double lat, final double lon) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String response = "";
+                try {
+                    response = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(lat, lon));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return response;
+            }
+
+            @Override
+            protected void onPostExecute(String response) {
+                super.onPostExecute(response);
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray jsonArray = object.getJSONArray("results");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject placeResult = jsonArray.getJSONObject(i);
+                        Log.d(TAG, placeResult.getString("name"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
     }
 
     // TODO

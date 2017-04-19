@@ -1,6 +1,5 @@
 package com.android.dailydeal.utils;
 
-import android.location.LocationManager;
 import android.net.Uri;
 
 import java.io.IOException;
@@ -35,8 +34,8 @@ public class NetworkUtils {
     }
 
     public static URL buildUrl(double lat, double lon) {
-                                //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
-        Uri builtUri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=1000&type=restaurant&keyword=cruise&key=AIzaSyCUwGHb--3AgjxQn13L7c-82XwGkxSSInM").buildUpon().build();
+        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-19.9078549,-43.9218217&radius=2000&type=grocery_or_supermarket&key=AIzaSyCo2hWaTEZKh5NkrtMtZ0PFsvTfdRW-tR8
+        Uri builtUri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=2000&type=grocery_or_supermarket&key=AIzaSyCo2hWaTEZKh5NkrtMtZ0PFsvTfdRW-tR8").buildUpon().build();
 
 
         URL url = null;
