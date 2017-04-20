@@ -9,10 +9,12 @@
     <string name="action_ok">Ok</string>
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
+    <string name="action_retry">Retry</string>
 
     <string name="label_no_deals">No deals to show.</string>
     <string name="label_name">Name</string>
     <string name="label_address">Address</string>
+    <string name="label_product_name">Product Name</string>
     <string name="label_old_price">Old price</string>
     <string name="label_new_price">New price</string>
     <string name="label_select_place">Select a place:</string>

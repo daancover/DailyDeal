@@ -10,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.dailydeal.R;
-import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.basics.Product;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,12 +23,15 @@ public class ProductListFragment extends Fragment {
     @BindView(R.id.tv_no_deals)
     TextView tvNoDeals;
 
+    private static final String ARG_PRODUCTS = "arg_products";
+
     public ProductListFragment() {
     }
 
-    public static ProductListFragment newInstance(int columnCount) {
+    public static ProductListFragment newInstance(ArrayList<Product> products) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_PRODUCTS, products);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,18 +45,14 @@ public class ProductListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-
         ButterKnife.bind(this, view);
 
-        // Set the adapter
-        rvRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (getArguments() != null) {
+            ArrayList<Product> products = getArguments().getParcelableArrayList(ARG_PRODUCTS);
+            rvRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            rvRecycler.setAdapter(new ProductListAdapter(products));
+        }
 
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
-        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
-        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
-        products.add(new Product("Product", 10.0, 5.0, new Place("Place Name", "Address", 0, 0)));
-        rvRecycler.setAdapter(new ProductListAdapter(products));
         return view;
     }
 }

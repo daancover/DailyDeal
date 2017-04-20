@@ -46,36 +46,88 @@
             android:paddingRight="@dimen/dimen_hdpi"
             android:paddingStart="@dimen/dimen_hdpi">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_mdpi"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_mdpi"
+                    android:adjustViewBounds="true"
+                    android:tint="@color/colorPrimaryDark"
+                    app:srcCompat="@drawable/ic_store" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_mdpi"
+                    android:layout_marginStart="@dimen/dimen_mdpi"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tl_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:enabled="false"
+                            android:hint="@string/label_name"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_ldpi" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tl_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_mdpi">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/et_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:enabled="false"
+                            android:hint="@string/label_address"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_ldpi" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tl_name"
+                android:id="@+id/tl_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_mdpi">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_name"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:enabled="false"
-                    android:hint="@string/label_name"
-                    android:maxLines="1"
-                    android:textSize="@dimen/text_ldpi" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/tl_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_mdpi">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_local_offer" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:enabled="false"
-                    android:hint="@string/label_address"
-                    android:maxLines="1"
-                    android:textSize="@dimen/text_ldpi" />
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_mdpi"
+                        android:layout_marginStart="@dimen/dimen_mdpi"
+                        android:hint="@string/label_product_name"
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_ldpi" />
+                </LinearLayout>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -84,15 +136,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_mdpi">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_old_price"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/label_old_price"
-                    android:inputType="number"
-                    android:maxLength="14"
-                    android:maxLines="1"
-                    android:textSize="@dimen/text_ldpi" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:tint="@color/colorAccent"
+                        app:srcCompat="@drawable/ic_money_off" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_old_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_mdpi"
+                        android:layout_marginStart="@dimen/dimen_mdpi"
+                        android:hint="@string/label_old_price"
+                        android:inputType="number"
+                        android:maxLength="14"
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_ldpi" />
+                </LinearLayout>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -101,15 +168,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_mdpi">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/et_new_price"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/label_new_price"
-                    android:inputType="number"
-                    android:maxLength="14"
-                    android:maxLines="1"
-                    android:textSize="@dimen/text_ldpi" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:tint="@android:color/holo_green_dark"
+                        app:srcCompat="@drawable/ic_attach_money" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_new_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dimen_mdpi"
+                        android:layout_marginStart="@dimen/dimen_mdpi"
+                        android:hint="@string/label_new_price"
+                        android:inputType="number"
+                        android:maxLength="14"
+                        android:maxLines="1"
+                        android:textSize="@dimen/text_ldpi" />
+                </LinearLayout>
             </android.support.design.widget.TextInputLayout>
 
             <Button

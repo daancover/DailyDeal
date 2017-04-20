@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -104,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
 
             } else {
                 // Google Sign In failed, update UI appropriately
-                // ...
             }
         }
     }

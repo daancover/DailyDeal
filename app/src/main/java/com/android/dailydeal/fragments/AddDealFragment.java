@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.activities.MainActivity;
@@ -31,6 +30,10 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     TextInputEditText etName;
     @BindView(R.id.et_address)
     TextInputEditText etAddress;
+    @BindView(R.id.tl_product_name)
+    TextInputLayout tlProductName;
+    @BindView(R.id.et_product_name)
+    TextInputEditText etProductName;
     @BindView(R.id.tl_old_price)
     TextInputLayout tlOldPrice;
     @BindView(R.id.et_old_price)
@@ -109,6 +112,11 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
             Snackbar.make(getView(), getString(R.string.label_must_select_place), Snackbar.LENGTH_LONG).show();
         }
 
+        if (etProductName.getText().toString().isEmpty()) {
+            success = false;
+            tlProductName.setError(getString(R.string.label_field_empty));
+        }
+
         if (etOldPrice.getText().toString().isEmpty()) {
             success = false;
             tlOldPrice.setError(getString(R.string.label_field_empty));
@@ -130,6 +138,7 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     }
 
     private void clearFieldErrors() {
+        tlProductName.setError(null);
         tlOldPrice.setError(null);
         tlNewPrice.setError(null);
     }

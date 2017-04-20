@@ -1,10 +1,13 @@
 package com.android.dailydeal.basics;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Daniel on 10/04/2017.
  */
 
-public class Product {
+public class Product implements Parcelable {
     private String product;
     private double oldPrice;
     private double newPrice;
@@ -51,4 +54,37 @@ public class Product {
     public void setPlace(Place place) {
         this.place = place;
     }
+
+    protected Product(Parcel in) {
+        product = in.readString();
+        oldPrice = in.readDouble();
+        newPrice = in.readDouble();
+        place = (Place) in.readValue(Place.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(product);
+        dest.writeDouble(oldPrice);
+        dest.writeDouble(newPrice);
+        dest.writeValue(place);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }
