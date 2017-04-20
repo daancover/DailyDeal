@@ -10,13 +10,18 @@ import com.android.dailydeal.R;
 import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.utils.TextUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
 
-    private final List<Product> mValues;
+    private ArrayList<Product> mValues;
 
-    public ProductListAdapter(List<Product> items) {
+    public ProductListAdapter() {
+        mValues = new ArrayList<>();
+    }
+
+    public ProductListAdapter(ArrayList<Product> items) {
         mValues = items;
     }
 
@@ -38,6 +43,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void setData(ArrayList<Product> products) {
+        mValues.clear();
+        mValues.addAll(products);
+        notifyDataSetChanged();
+    }
+
+    public void add(Product product) {
+        mValues.add(product);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

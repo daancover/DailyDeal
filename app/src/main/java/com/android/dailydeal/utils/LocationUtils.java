@@ -7,9 +7,11 @@ import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.android.dailydeal.basics.AddressComponents;
 import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.callbacks.OnCurrentPlaceListener;
 import com.android.dailydeal.callbacks.OnNearbyGroceryAndSupermarketListener;
+import com.android.dailydeal.callbacks.OnPlaceDetailsListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -88,7 +90,52 @@ public class LocationUtils {
         }.execute();
     }
 
-    // TODO
+    public static void getPlaceDetails(final OnPlaceDetailsListener listener, final String placeId) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String response = "";
+
+                try {
+                    response = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(placeId));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return response;
+            }
+
+            @Override
+            protected void onPostExecute(String response) {
+                super.onPostExecute(response);
+
+                try {
+                    JSONObject object = new JSONObject(response).getJSONObject("result");
+                    JSONArray jsonArray = object.getJSONArray("address_components");
+                    String[] treeAddress = new String[3];
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject addressResult = jsonArray.getJSONObject(i);
+                        AddressComponents address = new AddressComponents(addressResult);
+
+                        if(address.isCountry()) {
+                            treeAddress[0] = address.getLongName();
+                        } else if(address.isState()) {
+                            treeAddress[1] = address.getLongName();
+                        } else if(address.isCity()) {
+                            treeAddress[2] = address.getLongName();
+                        }
+                    }
+
+                    listener.onPlaceDetailsListenerResponse(treeAddress);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+    }
+
+    // TODO perhaps
 //    private Geocoder mGeocoder = new Geocoder(getActivity(), Locale.getDefault());
 //
 //    private String getCityNameByCoordinates(double lat, double lon) throws IOException {

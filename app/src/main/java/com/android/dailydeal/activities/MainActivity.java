@@ -19,10 +19,13 @@ import com.android.dailydeal.R;
 import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.callbacks.OnCurrentPlaceListener;
+import com.android.dailydeal.callbacks.OnGetDealsListener;
 import com.android.dailydeal.callbacks.OnNearbyGroceryAndSupermarketListener;
+import com.android.dailydeal.callbacks.OnPlaceDetailsListener;
 import com.android.dailydeal.fragments.AddDealFragment;
 import com.android.dailydeal.fragments.ProductListFragment;
 import com.android.dailydeal.utils.ActivityUtils;
+import com.android.dailydeal.utils.DatabaseUtils;
 import com.android.dailydeal.utils.DialogUtils;
 import com.android.dailydeal.utils.LocationUtils;
 import com.android.dailydeal.utils.LoginUtils;
@@ -32,8 +35,6 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -47,14 +48,10 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
     FloatingActionButton fab;
 
     private static final String TAG = LoginActivity.class.getName();
-    private static final String DATABASE_DEALS = "deals";
     private static final int PERMISSION_REQUEST_CODE = 1;
 
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDealsDatabaseReference;
     private boolean mHasValidLatLng;
-    private boolean mFirstTime;
     private double mLatitude;
     private double mLongitude;
     private ProgressDialog mProgressDialog;
@@ -73,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         setSupportActionBar(toolbar);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API).enableAutoManage(this, this).build();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDealsDatabaseReference = mFirebaseDatabase.getReference().child(DATABASE_DEALS);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
             } else {
-                mFirstTime = true;
                 getCurrentPlace();
             }
         }
@@ -117,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mFirstTime = true;
                     getCurrentPlace();
                 }
             }
@@ -126,29 +119,15 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     @Override
     public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
-        hideProgressDialog();
-
         try {
             mLatitude = response.get(0).getPlace().getLatLng().latitude;
             mLongitude = response.get(0).getPlace().getLatLng().longitude;
             mHasValidLatLng = true;
 
-//            TODO REMOVE MOCKED DATA
-            ArrayList<Product> products = new ArrayList<>();
-            products.add(new Product("Product 1", 10.0, 5.0, new Place("Place Name 1", "Address 1", 0, 0)));
-            products.add(new Product("Product 2", 10.0, 5.0, new Place("Place Name 2", "Address 2", 0, 0)));
-            products.add(new Product("Product 3", 10.0, 5.0, new Place("Place Name 3", "Address 3", 0, 0)));
-            products.add(new Product("Product 4", 10.0, 5.0, new Place("Place Name 4", "Address 4", 0, 0)));
-
-            ProductListFragment fragment = ProductListFragment.newInstance(products);
-
-            if (getSupportFragmentManager().getFragments().size() == 0) {
-                ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.container_main);
-            } else {
-                ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), fragment, R.id.container_main);
-            }
-
+            ProductListFragment fragment = ProductListFragment.newInstance(response.get(0).getPlace().getId());
+            ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), fragment, R.id.container_main);
         } catch (Exception e) {
+            hideProgressDialog();
             showLocationErrorDialog();
             mHasValidLatLng = false;
             e.printStackTrace();
@@ -233,8 +212,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionFaile
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void postDeal(String[] treeAddress, Product product) {
+        DatabaseUtils.postDeal(treeAddress, product);
     }
 }

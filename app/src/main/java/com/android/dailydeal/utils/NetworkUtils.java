@@ -16,13 +16,14 @@ import java.util.Scanner;
 public class NetworkUtils {
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
         try {
             InputStream in = urlConnection.getInputStream();
-
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 
             boolean hasInput = scanner.hasNext();
+
             if (hasInput) {
                 return scanner.next();
             } else {
@@ -46,4 +47,19 @@ public class NetworkUtils {
 
         return url;
     }
+
+    public static URL buildUrl(String placeId) {
+        // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJJyt6Jy-apgAR8h0J7OClL78&key=AIzaSyCo2hWaTEZKh5NkrtMtZ0PFsvTfdRW-tR8
+        Uri builtUri = Uri.parse("https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId + "&key=AIzaSyCo2hWaTEZKh5NkrtMtZ0PFsvTfdRW-tR8").buildUpon().build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
 }

@@ -15,15 +15,17 @@ public class Place implements Parcelable {
     private String address;
     private double lat;
     private double lon;
+    private String placeId;
 
     public Place() {
     }
 
-    public Place(String name, String address, double lat, double lon) {
+    public Place(String name, String address, double lat, double lon, String placeId) {
         this.name = name;
         this.address = address;
         this.lat = lat;
         this.lon = lon;
+        this.placeId =  placeId;
     }
 
     public Place(JSONObject result) {
@@ -31,7 +33,8 @@ public class Place implements Parcelable {
             this.name = result.getString("name");
             this.address = result.getString("vicinity");
             this.lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-            this.lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+            this.lon = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+            this.placeId = result.getString("place_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -70,11 +73,20 @@ public class Place implements Parcelable {
         this.lon = lon;
     }
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
     protected Place(Parcel in) {
         name = in.readString();
         address = in.readString();
         lat = in.readDouble();
         lon = in.readDouble();
+        placeId = in.readString();
     }
 
     @Override
@@ -88,6 +100,7 @@ public class Place implements Parcelable {
         dest.writeString(address);
         dest.writeDouble(lat);
         dest.writeDouble(lon);
+        dest.writeString(placeId);
     }
 
     @SuppressWarnings("unused")

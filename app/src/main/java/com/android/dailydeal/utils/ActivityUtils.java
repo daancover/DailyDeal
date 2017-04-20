@@ -17,7 +17,7 @@ public class ActivityUtils {
         checkNotNull(fragmentManager);
         checkNotNull(fragment);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(frameId, fragment, fragment.getClass().getName());
+        transaction.add(frameId, fragment);
         transaction.commit();
     }
 

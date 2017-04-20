@@ -13,8 +13,12 @@ import android.view.ViewGroup;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.activities.MainActivity;
+import com.android.dailydeal.basics.AddressComponents;
 import com.android.dailydeal.basics.Place;
+import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.callbacks.OnListFragmentInteractionListener;
+import com.android.dailydeal.callbacks.OnPlaceDetailsListener;
+import com.android.dailydeal.utils.LocationUtils;
 import com.android.dailydeal.utils.TextUtils;
 
 import java.util.ArrayList;
@@ -23,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddDealFragment extends Fragment implements OnListFragmentInteractionListener {
+public class AddDealFragment extends Fragment implements OnListFragmentInteractionListener, OnPlaceDetailsListener {
     @BindView(R.id.rv_recycler)
     RecyclerView rvRecycler;
     @BindView(R.id.et_name)
@@ -44,6 +48,8 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     TextInputEditText etNewPrice;
 
     private static final String ARG_PLACES = "arg_places";
+
+    private Place mSelectedPlace;
 
     public AddDealFragment() {
     }
@@ -84,8 +90,20 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
 
     @Override
     public void onListFragmentInteraction(Place item) {
+        mSelectedPlace = item;
         etName.setText(item.getName());
         etAddress.setText(item.getAddress());
+    }
+
+    @Override
+    public void onPlaceDetailsListenerResponse(String[] treeAddress) {
+        String productName = etProductName.getText().toString();
+        double oldPrice = TextUtils.getDoubleValueFromStringCurrency(etOldPrice.getText().toString());
+        double newPrice = TextUtils.getDoubleValueFromStringCurrency(etNewPrice.getText().toString());
+        Product product = new Product(productName, oldPrice, newPrice, mSelectedPlace);
+        ((MainActivity) getActivity()).postDeal(treeAddress, product);
+        ((MainActivity) getActivity()).hideProgressDialog();
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     @Override
@@ -98,7 +116,8 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     @OnClick(R.id.bt_submit)
     public void onSubmitClick() {
         if (validateFields()) {
-
+            ((MainActivity) getActivity()).showProgressDialog();
+            LocationUtils.getPlaceDetails(this, mSelectedPlace.getPlaceId());
         }
     }
 
