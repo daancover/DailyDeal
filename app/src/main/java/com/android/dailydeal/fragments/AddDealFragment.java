@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.dailydeal.R;
-import com.android.dailydeal.activities.MainActivity;
-import com.android.dailydeal.basics.AddressComponents;
+import com.android.dailydeal.activities.AddDealActivity;
 import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.callbacks.OnListFragmentInteractionListener;
@@ -69,12 +69,8 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).setupAddDeal();
-
         View view = inflater.inflate(R.layout.fragment_add_deal, container, false);
-
         ButterKnife.bind(this, view);
-
         rvRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (getArguments() != null) {
@@ -101,22 +97,15 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
         double oldPrice = TextUtils.getDoubleValueFromStringCurrency(etOldPrice.getText().toString());
         double newPrice = TextUtils.getDoubleValueFromStringCurrency(etNewPrice.getText().toString());
         Product product = new Product(productName, oldPrice, newPrice, mSelectedPlace);
-        ((MainActivity) getActivity()).postDeal(treeAddress, product);
-        ((MainActivity) getActivity()).hideProgressDialog();
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        ((MainActivity) getActivity()).setupProductList();
+        ((AddDealActivity) getActivity()).postDeal(treeAddress, product);
+        ((AddDealActivity) getActivity()).hideProgressDialog();
+        NavUtils.navigateUpFromSameTask(getActivity());
     }
 
     @OnClick(R.id.bt_submit)
     public void onSubmitClick() {
         if (validateFields()) {
-            ((MainActivity) getActivity()).showProgressDialog();
+            ((AddDealActivity) getActivity()).showProgressDialog();
             LocationUtils.getPlaceDetails(this, mSelectedPlace.getPlaceId());
         }
     }

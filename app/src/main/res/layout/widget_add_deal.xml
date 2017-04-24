@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/dimen_ldpi"
+        android:layout_marginRight="@dimen/dimen_ldpi"
+        android:background="@drawable/bg_rounded_dark"
+        android:paddingBottom="@dimen/dimen_lldpi"
+        android:paddingEnd="32dp"
+        android:paddingLeft="@dimen/dimen_mdpi"
+        android:paddingRight="32dp"
+        android:paddingStart="@dimen/dimen_mdpi"
+        android:paddingTop="@dimen/dimen_lldpi"
+        android:text="@string/label_add_new_deal"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="end"
+        android:background="@drawable/bg_oval_accent"
+        android:padding="@dimen/dimen_mdpi"
+        android:src="@drawable/ic_add"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+</FrameLayout>

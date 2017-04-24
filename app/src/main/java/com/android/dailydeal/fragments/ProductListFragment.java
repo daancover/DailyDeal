@@ -80,12 +80,6 @@ public class ProductListFragment extends Fragment implements OnPlaceDetailsListe
     }
 
     @Override
-    public void onGetDealsListenerResponse(Product product) {
-        mAdapter.add(product);
-        ((MainActivity) getActivity()).hideProgressDialog();
-    }
-
-    @Override
     public void onGetDealsListenerResponse(ArrayList<Product> products) {
         mAdapter.setData(products);
 
@@ -95,7 +89,13 @@ public class ProductListFragment extends Fragment implements OnPlaceDetailsListe
             showList();
         }
 
-        ((MainActivity) getActivity()).hideProgressDialog();
+        if(getActivity() != null) {
+            ((MainActivity) getActivity()).hideProgressDialog();
+        }
+    }
+
+    public void updatePrductList(String placeId) {
+        LocationUtils.getPlaceDetails(this, placeId);
     }
 
     public void showList() {

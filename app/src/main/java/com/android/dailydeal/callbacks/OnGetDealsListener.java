@@ -9,7 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface OnGetDealsListener {
-    void onGetDealsListenerResponse(Product product);
-
     void onGetDealsListenerResponse(ArrayList<Product> products);
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.utils.LoginUtils;
+import com.android.dailydeal.widgets.AddDealWidgetProvider;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

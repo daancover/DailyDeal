@@ -24,5 +24,7 @@
     <string name="label_must_select_place">You must select a place in the list above.</string>
     <string name="label_field_empty">This field cannot be empty.</string>
     <string name="label_new_price_lower">New price must be lower than old price.</string>
+    <string name="label_add_new_deal">Add new deal</string>
+    <string name="title_activity_add_deal">AddDealActivity</string>
 
 </resources>

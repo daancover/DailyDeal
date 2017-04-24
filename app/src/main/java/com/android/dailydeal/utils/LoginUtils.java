@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.dailydeal.activities.LoginActivity;
+import com.android.dailydeal.widgets.AddDealWidgetProvider;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
