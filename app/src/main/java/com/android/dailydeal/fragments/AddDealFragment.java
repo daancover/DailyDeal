@@ -5,7 +5,10 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,20 +17,26 @@ import android.view.ViewGroup;
 
 import com.android.dailydeal.R;
 import com.android.dailydeal.activities.AddDealActivity;
+import com.android.dailydeal.basics.AddressComponents;
 import com.android.dailydeal.basics.Place;
 import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.callbacks.OnListFragmentInteractionListener;
 import com.android.dailydeal.callbacks.OnPlaceDetailsListener;
-import com.android.dailydeal.utils.LocationUtils;
+import com.android.dailydeal.utils.NetworkUtils;
 import com.android.dailydeal.utils.TextUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddDealFragment extends Fragment implements OnListFragmentInteractionListener, OnPlaceDetailsListener {
+public class AddDealFragment extends Fragment implements OnListFragmentInteractionListener, OnPlaceDetailsListener, LoaderManager.LoaderCallbacks<String> {
     @BindView(R.id.rv_recycler)
     RecyclerView rvRecycler;
     @BindView(R.id.et_name)
@@ -48,6 +57,8 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     TextInputEditText etNewPrice;
 
     private static final String ARG_PLACES = "arg_places";
+    private static final String ARG_PLACE_ID = "arg_place_id";
+    private static final int PLACE_DETAILS_LOADER = 3;
 
     private Place mSelectedPlace;
 
@@ -106,7 +117,93 @@ public class AddDealFragment extends Fragment implements OnListFragmentInteracti
     public void onSubmitClick() {
         if (validateFields()) {
             ((AddDealActivity) getActivity()).showProgressDialog();
-            LocationUtils.getPlaceDetails(this, mSelectedPlace.getPlaceId());
+            getPlaceDetails(mSelectedPlace.getPlaceId());
+        }
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<String>(getContext()) {
+            @Override
+            protected void onStartLoading() {
+                super.onStartLoading();
+
+                if (args == null) {
+                    return;
+                }
+
+                forceLoad();
+            }
+
+            @Override
+            public String loadInBackground() {
+                String placeId = args.getString(ARG_PLACE_ID);
+
+                if (placeId == null || placeId.isEmpty()) {
+                    return null;
+                }
+
+                String response = "";
+
+                try {
+                    response = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(placeId));
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((AddDealActivity) getActivity()).showNetworkErrorDialog();
+                        }
+                    });
+                }
+
+                return response;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        try {
+            JSONObject object = new JSONObject(data).getJSONObject("result");
+            JSONArray jsonArray = object.getJSONArray("address_components");
+            String[] treeAddress = new String[3];
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject addressResult = jsonArray.getJSONObject(i);
+                AddressComponents address = new AddressComponents(addressResult);
+
+                if (address.isCountry()) {
+                    treeAddress[0] = address.getLongName();
+                } else if (address.isState()) {
+                    treeAddress[1] = address.getLongName();
+                } else if (address.isCity()) {
+                    treeAddress[2] = address.getLongName();
+                }
+            }
+
+            onPlaceDetailsListenerResponse(treeAddress);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+
+    }
+
+    private void getPlaceDetails(String placeId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_PLACE_ID, placeId);
+        LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+        Loader<String> productListLoader = loaderManager.getLoader(PLACE_DETAILS_LOADER);
+
+        if (productListLoader == null) {
+            loaderManager.initLoader(PLACE_DETAILS_LOADER, bundle, this);
+        } else {
+            loaderManager.restartLoader(PLACE_DETAILS_LOADER, bundle, this);
         }
     }
 

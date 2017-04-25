@@ -125,7 +125,8 @@
                         android:layout_marginLeft="@dimen/dimen_mdpi"
                         android:layout_marginStart="@dimen/dimen_mdpi"
                         android:hint="@string/label_product_name"
-                        android:inputType="text"
+                        android:inputType="textCapWords"
+                        android:maxLength="50"
                         android:maxLines="1"
                         android:textSize="@dimen/text_ldpi" />
                 </LinearLayout>

@@ -11,10 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.android.dailydeal.R;
-import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.fragments.ProductListFragment;
 import com.android.dailydeal.utils.ActivityUtils;
-import com.android.dailydeal.utils.DatabaseUtils;
 import com.android.dailydeal.utils.LoginUtils;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +36,6 @@ public class MainActivity extends BaseActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             LoginUtils.goToLogin(this);
-            finish();
         }
 
         setContentView(R.layout.activity_main);
@@ -59,6 +56,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        overridePendingTransition(R.anim.animation_add_deal_enter, R.anim.animation_leave);
     }
 
     @Override
@@ -76,13 +75,15 @@ public class MainActivity extends BaseActivity {
     public void onCurrentPlaceResponse(PlaceLikelihoodBuffer response) {
         super.onCurrentPlaceResponse(response);
 
-        if(response.getStatus().getStatusMessage() != "ERROR") {
-            if(mFragment != null && mFragment.isAdded()) {
-                mFragment.updatePrductList(response.get(0).getPlace().getId());
+        if (response.getStatus().getStatusMessage() != "ERROR" && response.getStatus().getStatusMessage() != "NETWORK_ERROR") {
+            if (mFragment != null && mFragment.isAdded()) {
+                mFragment.updateProductList(response.get(0).getPlace().getId());
             } else {
                 mFragment = ProductListFragment.newInstance(response.get(0).getPlace().getId());
                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), mFragment, R.id.container_main);
             }
+        } else if (response.getStatus().getStatusMessage() == "NETWORK_ERROR") {
+            showNetworkErrorDialog();
         } else {
             showLocationErrorDialog();
         }

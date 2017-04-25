@@ -67,8 +67,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
             mLongitude = response.get(0).getPlace().getLatLng().longitude;
             mHasValidLatLng = true;
         } catch (Exception e) {
-            hideProgressDialog();
-            showLocationErrorDialog();
             mHasValidLatLng = false;
             e.printStackTrace();
         }
@@ -99,7 +97,20 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void showLocationErrorDialog() {
+        hideProgressDialog();
+
         DialogUtils.showDialog(this, getString(R.string.title_attention), getString(R.string.label_retrieve_current_location), true, getString(R.string.action_retry), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getCurrentPlace();
+            }
+        });
+    }
+
+    public void showNetworkErrorDialog() {
+        hideProgressDialog();
+
+        DialogUtils.showDialog(this, getString(R.string.title_attention), getString(R.string.label_no_network), true, getString(R.string.action_retry), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getCurrentPlace();
@@ -122,7 +133,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     LoginUtils.signOut(BaseActivity.this);
-                    finish();
                 }
             }, null);
 

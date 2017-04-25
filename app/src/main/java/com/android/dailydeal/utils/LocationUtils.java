@@ -118,11 +118,11 @@ public class LocationUtils {
                         JSONObject addressResult = jsonArray.getJSONObject(i);
                         AddressComponents address = new AddressComponents(addressResult);
 
-                        if(address.isCountry()) {
+                        if (address.isCountry()) {
                             treeAddress[0] = address.getLongName();
-                        } else if(address.isState()) {
+                        } else if (address.isState()) {
                             treeAddress[1] = address.getLongName();
-                        } else if(address.isCity()) {
+                        } else if (address.isCity()) {
                             treeAddress[2] = address.getLongName();
                         }
                     }
@@ -134,16 +134,4 @@ public class LocationUtils {
             }
         }.execute();
     }
-
-    // TODO perhaps
-//    private Geocoder mGeocoder = new Geocoder(getActivity(), Locale.getDefault());
-//
-//    private String getCityNameByCoordinates(double lat, double lon) throws IOException {
-//
-//        List<Address> addresses = mGeocoder.getFromLocation(lat, lon, 1);
-//        if (addresses != null && addresses.size() > 0) {
-//            return addresses.get(0).getLocality();
-//        }
-//        return null;
-//    }
 }

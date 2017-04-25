@@ -18,7 +18,7 @@ public class ActivityUtils {
         checkNotNull(fragment);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment, int frameId, Bundle bundle) {

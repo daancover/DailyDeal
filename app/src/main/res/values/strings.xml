@@ -3,6 +3,7 @@
 
     <string name="title_activity_main">MainActivity</string>
     <string name="title_attention">Attention</string>
+    <string name="title_activity_add_deal">AddDealActivity</string>
 
     <string name="action_log_out">Log out</string>
     <string name="action_submit">Submit</string>
@@ -25,6 +26,6 @@
     <string name="label_field_empty">This field cannot be empty.</string>
     <string name="label_new_price_lower">New price must be lower than old price.</string>
     <string name="label_add_new_deal">Add new deal</string>
-    <string name="title_activity_add_deal">AddDealActivity</string>
+    <string name="label_no_network">Network error. Please check your connection and try again.</string>
 
 </resources>
