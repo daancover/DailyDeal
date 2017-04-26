@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget"
     android:layout_width="match_parent"
@@ -8,56 +7,51 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recycler"
-        android:name="com.android.dailydeal.fragments.ProductListFragment"
+    <ListView
+        android:id="@+id/lv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="com.android.dailydeal.fragments.ProductListFragment"
         tools:listitem="@layout/item_deal" />
 
     <TextView
         android:id="@+id/tv_no_deals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_no_deals"
-        android:visibility="gone" />
+        android:text="@string/label_no_deals" />
 </LinearLayout>
 
-<!--
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/widget"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <TextView
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/widget"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/dimen_ldpi"
-        android:layout_marginRight="@dimen/dimen_ldpi"
-        android:background="@drawable/bg_rounded_dark"
-        android:paddingBottom="@dimen/dimen_lldpi"
-        android:paddingEnd="32dp"
-        android:paddingLeft="@dimen/dimen_mdpi"
-        android:paddingRight="32dp"
-        android:paddingStart="@dimen/dimen_mdpi"
-        android:paddingTop="@dimen/dimen_lldpi"
-        android:text="@string/label_add_new_deal"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="end"
-        android:background="@drawable/bg_oval_accent"
-        android:padding="@dimen/dimen_mdpi"
-        android:src="@drawable/ic_add"
-        tools:ignore="ContentDescription,VectorDrawableCompat" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/dimen_ldpi"
+            android:layout_marginRight="@dimen/dimen_ldpi"
+            android:background="@drawable/bg_rounded_dark"
+            android:paddingBottom="@dimen/dimen_lldpi"
+            android:paddingEnd="32dp"
+            android:paddingLeft="@dimen/dimen_mdpi"
+            android:paddingRight="32dp"
+            android:paddingStart="@dimen/dimen_mdpi"
+            android:paddingTop="@dimen/dimen_lldpi"
+            android:text="@string/label_add_new_deal"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
 
-</FrameLayout>-->
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_oval_accent"
+            android:padding="@dimen/dimen_mdpi"
+            android:src="@drawable/ic_add"
+            tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    </FrameLayout>-->

@@ -1,5 +1,7 @@
 package com.android.dailydeal.fragments;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -18,6 +20,7 @@ import com.android.dailydeal.basics.AddressComponents;
 import com.android.dailydeal.basics.Product;
 import com.android.dailydeal.callbacks.OnGetDealsListener;
 import com.android.dailydeal.callbacks.OnPlaceDetailsListener;
+import com.android.dailydeal.data.DealContract;
 import com.android.dailydeal.utils.DatabaseUtils;
 import com.android.dailydeal.utils.NetworkUtils;
 
@@ -91,15 +94,29 @@ public class ProductListFragment extends Fragment implements OnPlaceDetailsListe
 
     @Override
     public void onGetDealsListenerResponse(ArrayList<Product> products) {
-        mAdapter.setData(products);
-
-        if (products.isEmpty()) {
-            showEmptyList();
-        } else {
-            showList();
-        }
-
         if (getActivity() != null) {
+            mAdapter.setData(products);
+
+            ContentValues contentValues;
+            ContentResolver contentResolver = getActivity().getContentResolver();
+            contentResolver.delete(DealContract.DealEntry.CONTENT_URI, null, null);
+
+            for (Product product : products) {
+                contentValues = new ContentValues();
+                contentValues.put(DealContract.DealEntry.COLUMN_PRODUCT, product.getProduct());
+                contentValues.put(DealContract.DealEntry.COLUMN_PLACE, product.getPlace().getName());
+                contentValues.put(DealContract.DealEntry.COLUMN_ADDRESS, product.getPlace().getAddress());
+                contentValues.put(DealContract.DealEntry.COLUMN_OLD_PRICE, product.getOldPrice());
+                contentValues.put(DealContract.DealEntry.COLUMN_NEW_PRICE, product.getNewPrice());
+                contentResolver.insert(DealContract.DealEntry.CONTENT_URI, contentValues);
+            }
+
+            if (products.isEmpty()) {
+                showEmptyList();
+            } else {
+                showList();
+            }
+
             ((MainActivity) getActivity()).hideProgressDialog();
         }
     }

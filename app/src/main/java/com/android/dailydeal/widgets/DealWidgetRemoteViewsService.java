@@ -1,14 +1,15 @@
 package com.android.dailydeal.widgets;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Binder;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.android.dailydeal.R;
-import com.android.dailydeal.basics.Product;
-
-import java.util.ArrayList;
+import com.android.dailydeal.data.DealContract;
+import com.android.dailydeal.utils.TextUtils;
 
 /**
  * Created by Daniel on 25/04/2017.
@@ -18,53 +19,55 @@ public class DealWidgetRemoteViewsService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
-            private ArrayList<Product> data;
+            private Cursor data;
 
             @Override
             public void onCreate() {
-
             }
 
             @Override
             public void onDataSetChanged() {
                 if (data != null) {
-                    data.clear();
+                    data.close();
                 }
 
-                // TODO GET DATA?
+                final long identityToken = Binder.clearCallingIdentity();
+                data = getContentResolver().query(DealContract.DealEntry.CONTENT_URI, null, null, null, null, null);
+                Binder.restoreCallingIdentity(identityToken);
             }
 
             @Override
             public void onDestroy() {
                 if (data != null) {
+                    data.close();
                     data = null;
                 }
             }
 
             @Override
             public int getCount() {
-                return data == null ? 0 : data.size();
+                return data == null ? 0 : data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
-                if (position == AdapterView.INVALID_POSITION || data == null || !(position < data.size())) {
+                if (position == AdapterView.INVALID_POSITION || data == null || !data.moveToPosition(position)) {
                     return null;
                 }
 
-                Product product = data.get(position);
+                data.moveToPosition(position);
 
-                RemoteViews views = new RemoteViews(getPackageName(), R.layout.item_deal);
-                views.setTextViewText(R.id.tv_product, product.getProduct());
-                views.setTextViewText(R.id.tv_place, product.getPlace().getName());
-                views.setTextViewText(R.id.tv_address, product.getPlace().getAddress());
-                views.setTextViewText(R.id.tv_price, product.getNewPrice() + "");
+                RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_item_deal);
+                views.setTextViewText(R.id.tv_product, data.getString(1));
+                views.setTextViewText(R.id.tv_place, data.getString(2));
+                views.setTextViewText(R.id.tv_address, data.getString(3));
+                views.setTextViewText(R.id.tv_price, TextUtils.currencyFormat(data.getDouble(5)));
                 return views;
             }
 
             @Override
             public RemoteViews getLoadingView() {
-                return new RemoteViews(getPackageName(), R.layout.item_deal);
+                return new RemoteViews(getPackageName(), R.layout.widget_item_deal);
             }
 
             @Override
@@ -74,6 +77,10 @@ public class DealWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
+                if (data.moveToPosition(position)) {
+                    return data.getInt(0);
+                }
+
                 return position;
             }
 
