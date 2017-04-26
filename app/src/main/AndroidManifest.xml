@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
@@ -21,25 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCgrB9MAFYPkVWD3tNWkqcQu6E8RWdKtPE" />
-
-        <receiver
-            android:name=".widgets.AddDealWidgetProvider"
-            android:label="@string/label_add_new_deal">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_add_deal" />
-        </receiver>
 
         <activity
             android:name=".activities.AddDealActivity"
@@ -48,6 +34,33 @@
             android:theme="@style/AppTheme">
 
         </activity>
-    </application>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCgrB9MAFYPkVWD3tNWkqcQu6E8RWdKtPE" />
+
+        <provider
+            android:name="com.android.dailydeal.data.DealContentProvider"
+            android:authorities="com.android.dailydeal"
+            android:exported="false" />
+
+        <receiver
+            android:name=".widgets.AddDealWidgetProvider"
+            android:label="@string/label_add_new_deal">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.android.dailydeal.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_add_deal" />
+        </receiver>
+
+        <service
+            android:name=".widgets.DealWidgetRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
 </manifest>

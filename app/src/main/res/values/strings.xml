@@ -27,5 +27,6 @@
     <string name="label_new_price_lower">New price must be lower than old price.</string>
     <string name="label_add_new_deal">Add new deal</string>
     <string name="label_no_network">Network error. Please check your connection and try again.</string>
+    <string name="label_auth_fail">Authentication failed.</string>
 
 </resources>
